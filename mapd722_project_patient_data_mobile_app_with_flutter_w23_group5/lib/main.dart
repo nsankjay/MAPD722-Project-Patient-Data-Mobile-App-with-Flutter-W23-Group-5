@@ -47,7 +47,7 @@ class LoginPage extends StatelessWidget {
                 'Welcome',
                 style: TextStyle(
                   color: Color.fromARGB(255, 233, 148, 139),
-                  fontSize: 45,
+                  fontSize: 40,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -55,7 +55,7 @@ class LoginPage extends StatelessWidget {
                 'WeCare Healthcare',
                 style: TextStyle(
                   color: Color.fromARGB(255, 85, 202, 241),
-                  fontSize: 35,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -64,7 +64,23 @@ class LoginPage extends StatelessWidget {
               ),
               // Image.network(
               //     'https://png.pngtree.com/template/20190926/ourmid/pngtree-medical-pharmacy-heart-healthcare-logo-vector-graphic-design-image_309769.jpg'),
-              Image.asset('images/healthcarelogo.webp'),
+              Image.asset(
+                'images/healthcarelogo.webp',
+                // height: 250,
+                // width: 250,
+              ),
+              Row(
+                children: const [
+                  Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.black45,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(
                 height: 20.0,
               ),
@@ -107,9 +123,10 @@ class LoginPage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 85, 202, 241),
+                  backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
-                  minimumSize: const Size(420, 40),
+                  minimumSize: const Size(420, 50),
+                  shape: const StadiumBorder(),
                 ),
                 child: const Text(
                   'Login',
@@ -117,6 +134,10 @@ class LoginPage extends StatelessWidget {
                     fontSize: 25,
                   ),
                 ),
+              ),
+
+               const SizedBox(
+                height: 10,
               ),
 
               //! Register Button
@@ -133,7 +154,8 @@ class LoginPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 233, 148, 139),
                   foregroundColor: Colors.white,
-                  minimumSize: const Size(420, 40),
+                  minimumSize: const Size(420, 50),
+                  shape: const StadiumBorder(),
                 ),
                 child: const Text(
                   'Register',

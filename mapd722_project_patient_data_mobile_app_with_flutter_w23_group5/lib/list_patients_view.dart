@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/add_patient_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/main.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/patient_details_view.dart';
-import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_description_page.dart';
 
 import 'list_critical_patients_view.dart';
 
