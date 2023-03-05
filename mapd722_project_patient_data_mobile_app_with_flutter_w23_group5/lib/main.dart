@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_patients_view.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/register_user_view.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_home_page.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +31,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Colors.white,
       // appBar: AppBar(
       //   title: const Text('Welcome'),
       //   centerTitle: true,
@@ -46,7 +51,7 @@ class LoginPage extends StatelessWidget {
             const Text(
               'WeCare Healthcare',
               style: TextStyle(
-                color: Colors.white70,
+                color: Color.fromARGB(255, 85, 202, 241),
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
               ),
@@ -60,12 +65,46 @@ class LoginPage extends StatelessWidget {
             const SizedBox(
               height: 20.0,
             ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'User Name',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              //keyboardType: TextInputType.number,
+              //inputFormatters: <TextInputFormatter> [FilteringTextInputFormatter.digitsOnly],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              //keyboardType: TextInputType.number,
+              //inputFormatters: <TextInputFormatter> [FilteringTextInputFormatter.digitsOnly],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return const TestHomePage();
+                    },
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 85, 202, 241),
                 foregroundColor: Colors.white,
-                minimumSize: const Size(300, 40),
+                minimumSize: const Size(420, 40),
               ),
               child: const Text(
                 'Login',
@@ -75,11 +114,19 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return const RegisterUserView();
+                    },
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 233, 148, 139),
                 foregroundColor: Colors.white,
-                minimumSize: const Size(300, 40),
+                minimumSize: const Size(420, 40),
               ),
               child: const Text(
                 'Register',
