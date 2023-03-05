@@ -3,16 +3,97 @@ import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/patient_details_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_description_page.dart';
 
-class TestHomePage extends StatelessWidget {
+class TestHomePage extends StatefulWidget {
   const TestHomePage({super.key});
+
+  @override
+  State<TestHomePage> createState() => _TestHomePageState();
+}
+
+class _TestHomePageState extends State<TestHomePage> {
+
+  Color backgroundColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         //automaticallyImplyLeading: false,
-        title: const Text('Patients List'),
+        title: const Text('Patients List Test'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (backgroundColor == Colors.white) 
+                {
+                  backgroundColor = Colors.blue;
+                } else {
+                  backgroundColor = Colors.white;
+                }
+              });
+            },
+            icon: const Icon(
+              Icons.color_lens,
+            ),
+          ),
+        ],
+      ),
+      drawer: SafeArea(
+        child: Drawer(
+          child: Column(
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: ListTile(
+                  title: Text(
+                    'WeCare App',
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
+                  ),
+                ),
+              ),
+              ListTile(
+                onTap: () {},
+                leading: const Icon(Icons.person),
+                title: const Text(
+                  'Patients List',
+                ),
+              ),
+              ListTile(
+                onTap: () {},
+                leading: const Icon(Icons.document_scanner_rounded),
+                title: const Text(
+                  'Add Patient',
+                ),
+              ),
+              ListTile(
+                onTap: () {},
+                leading: const Icon(Icons.crisis_alert_rounded),
+                title: const Text(
+                  'Critical Patients',
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return const LoginPage();
+                      },
+                    ),
+                  );
+                },
+                leading: const Icon(Icons.logout_rounded),
+                title: const Text(
+                  'Logout',
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -73,13 +154,17 @@ class TestHomePage extends StatelessWidget {
                 ],
               ),
             ),
+            //! First Container
             GestureDetector(
               onTap: () {
                 print('You Have clicked on Max Payne');
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return const TestDescritionPage();
+                      return const TestDescritionPage(
+                        title: 'Max Payne',
+                        imagePath: 'images/slot_cherry_image.jpg',
+                      );
                     },
                   ),
                 );
@@ -105,7 +190,7 @@ class TestHomePage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Image.asset('images/applogo.png'),
+                    Image.asset('images/slot_cherry_image.jpg'),
                     const ListTile(
                       title: Text('Max Payne'),
                       trailing: Icon(Icons.arrow_forward_ios_rounded),
@@ -114,13 +199,17 @@ class TestHomePage extends StatelessWidget {
                 ),
               ),
             ),
+            //! Second Container
             GestureDetector(
               onTap: () {
-                print('You Have clicked on Max Payne');
+                print('You Have clicked on Mona Sax');
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return const PatientDetailsView();
+                      return const TestDescritionPage(
+                        title: 'Mona Sax',
+                        imagePath: 'images/slot_7_image.jpg',
+                      );
                     },
                   ),
                 );
@@ -146,7 +235,7 @@ class TestHomePage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Image.asset('images/applogo.png'),
+                    Image.asset('images/slot_7_image.jpg'),
                     const ListTile(
                       title: Text('Mona Sax'),
                       trailing: Icon(Icons.arrow_forward_ios_rounded),
@@ -155,13 +244,17 @@ class TestHomePage extends StatelessWidget {
                 ),
               ),
             ),
+            //! Third Container
             GestureDetector(
               onTap: () {
-                print('You Have clicked on Max Payne');
+                print('You Have clicked on Alfred Woden');
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return const PatientDetailsView();
+                      return const TestDescritionPage(
+                        title: 'Alfred Woden',
+                        imagePath: 'images/slot_lemon_image.jpg',
+                      );
                     },
                   ),
                 );
@@ -187,7 +280,7 @@ class TestHomePage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Image.asset('images/applogo.png'),
+                    Image.asset('images/slot_lemon_image.jpg'),
                     const ListTile(
                       title: Text('Alfred Woden'),
                       trailing: Icon(Icons.arrow_forward_ios_rounded),
