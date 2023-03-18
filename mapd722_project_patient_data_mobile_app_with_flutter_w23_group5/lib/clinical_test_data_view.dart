@@ -22,7 +22,7 @@ class ClinicalTestDataView extends StatelessWidget {
                   height: 20.0,
                 ),
                 const Text(
-                  'Max Payne',
+                  'Sankjay Lingam',
                   style: TextStyle(
                     color: Colors.black45,
                     fontSize: 20,
@@ -45,12 +45,13 @@ class ClinicalTestDataView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'e123T53417r53',
+                      '637288eadbdcc0fc7e92c2bd',
                       style: TextStyle(
                         color: Colors.black54,
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
+                      textScaleFactor: 0.8,
                     ),
                   ],
                 ),
@@ -70,7 +71,7 @@ class ClinicalTestDataView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '04/03/2023',
+                      '16/11/2022',
                       style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20,

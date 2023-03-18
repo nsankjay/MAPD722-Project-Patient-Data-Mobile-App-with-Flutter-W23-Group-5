@@ -3,11 +3,12 @@
 //  Course Instructer - Rania Arbash
 //  Project Authors - Sankjay Nithyanandalingam (301296000), Victor Quezada (301286477)
 //  Created on - 27/02/2023
-//  Modified Last - 05/03/2023
+//  Modified Last - 17/03/2023
 //  Description - Patient Data Mobile App is a app developped using Flutter and its purpose is to help health care 
 //                professionals to maintain records of Patients and their Clinical Data. And also to Identify their health 
 //                condition at any given time.
 //  Version v1.1 - 05/03/2023
+//  Version v1.2 - 17/03/2023
 //
 
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/patient_details_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/register_user_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_home_page.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list1.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_navigation.dart';
 
 void main() {
@@ -129,7 +131,7 @@ class LoginPage extends StatelessWidget {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
-                        return const ListPatientsView();
+                        return const testList1();
                       },
                     ),
                   );

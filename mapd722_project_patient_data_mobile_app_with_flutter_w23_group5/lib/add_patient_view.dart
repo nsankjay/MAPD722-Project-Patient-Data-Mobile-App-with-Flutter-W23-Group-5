@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_critical_patients_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_patients_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/main.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list1.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list_critical_patients_view.dart';
 
 class AddPatientView extends StatelessWidget {
   const AddPatientView({super.key});
@@ -33,7 +35,7 @@ class AddPatientView extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
-                        return const ListPatientsView();
+                        return const testList1();
                       },
                     ),
                   );
@@ -57,7 +59,7 @@ class AddPatientView extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
-                        return const ListCriticalPatientsView();
+                        return const TestListCriticalPatientsView();
                       },
                     ),
                   );

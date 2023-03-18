@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_tests_view.dart';
+import 'package:http/http.dart' as http;
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list_tests_view.dart';
 
 class PatientDetailsView extends StatelessWidget {
   const PatientDetailsView({super.key});
@@ -25,7 +27,7 @@ class PatientDetailsView extends StatelessWidget {
                 Row(
                   children: const [
                     Text(
-                      'Max Payne',
+                      'Sankjay Lingam',
                       style: TextStyle(
                         color: Colors.black45,
                         fontSize: 35,
@@ -44,7 +46,7 @@ class PatientDetailsView extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return const ListTestsView();
+                          return const TestListTestsView();
                         },
                       ),
                     );
@@ -78,7 +80,7 @@ class PatientDetailsView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Max',
+                      'Sankjay',
                       style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20,
@@ -102,7 +104,7 @@ class PatientDetailsView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Payne',
+                      'Lingam',
                       style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20,
@@ -198,7 +200,7 @@ class PatientDetailsView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'payne2theMax@gmail.com',
+                      'SN@centennial.com',
                       style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20,
@@ -222,7 +224,7 @@ class PatientDetailsView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'N. Sankjay',
+                      'S. Priyaa',
                       style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20,
@@ -294,7 +296,7 @@ class PatientDetailsView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Alex',
+                      'Q. Victor',
                       style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20,
