@@ -146,7 +146,6 @@ class RegisterUserView extends StatelessWidget {
                   //   ),
                   // );
                 int responseCode = await registerAPI();
-                if (userNameController.text !="") {
                   if (responseCode == 200) {
                     Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -155,10 +154,9 @@ class RegisterUserView extends StatelessWidget {
                       },
                     ),
                   );
-                }
                 } else {
-                  //Todo Alert
-                }
+                  _showMyDialog(context);
+                } 
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -201,4 +199,32 @@ Future<int> registerAPI () async {
   );
   print(response.body);
   return response.statusCode;
+}
+
+Future<void> _showMyDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Missing Data'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              //Text('Login Error'),
+              Text('All fields are mandatory. please enter data'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
