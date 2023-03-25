@@ -1,5 +1,16 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/main.dart';
+
+import 'constants.dart';
+
+final TextEditingController firstNameController = TextEditingController();
+final TextEditingController lastNameController = TextEditingController();
+final TextEditingController eMailController = TextEditingController();
+final TextEditingController userNameController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
 
 class RegisterUserView extends StatelessWidget {
   const RegisterUserView({super.key});
@@ -54,6 +65,7 @@ class RegisterUserView extends StatelessWidget {
 
               //! Text Fields
               TextField(
+                controller: firstNameController,
                 decoration: InputDecoration(
                   labelText: 'First Name',
                   border: OutlineInputBorder(
@@ -67,6 +79,7 @@ class RegisterUserView extends StatelessWidget {
                 height: 10,
               ),
               TextField(
+                controller: lastNameController,
                 decoration: InputDecoration(
                   labelText: 'Last Name',
                   border: OutlineInputBorder(
@@ -80,6 +93,7 @@ class RegisterUserView extends StatelessWidget {
                 height: 10,
               ),
               TextField(
+                controller: eMailController,
                 decoration: InputDecoration(
                   labelText: 'E-Mail',
                   border: OutlineInputBorder(
@@ -93,6 +107,7 @@ class RegisterUserView extends StatelessWidget {
                 height: 10,
               ),
               TextField(
+                controller: userNameController,
                 decoration: InputDecoration(
                   labelText: 'User Name',
                   border: OutlineInputBorder(
@@ -106,6 +121,7 @@ class RegisterUserView extends StatelessWidget {
                 height: 10,
               ),
               TextField(
+                controller: passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(
@@ -121,14 +137,28 @@ class RegisterUserView extends StatelessWidget {
 
               //! Register Button
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
+                onPressed: () async {
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (BuildContext context) {
+                  //       return const LoginPage();
+                  //     },
+                  //   ),
+                  // );
+                int responseCode = await registerAPI();
+                if (userNameController.text !="") {
+                  if (responseCode == 200) {
+                    Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
                         return const LoginPage();
                       },
                     ),
                   );
+                }
+                } else {
+                  //Todo Alert
+                }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -149,4 +179,26 @@ class RegisterUserView extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<int> registerAPI () async {
+
+  var requestBody = json.encode({
+    "firstName":firstNameController.text,
+    "lastName":lastNameController.text,
+    "email":eMailController.text,
+    "username":userNameController.text,
+    "password":passwordController.text,
+  });
+  print(requestBody);
+  final response = await http.post(
+      Uri.parse(baseUrl!+"api/register"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Accept": "application/json",
+      },
+      body:  requestBody
+  );
+  print(response.body);
+  return response.statusCode;
 }

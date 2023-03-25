@@ -135,7 +135,7 @@ class _TestListCriticalPatientsViewState extends State<TestListCriticalPatientsV
           return ListTile(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => PatientDetailsView(),
+                  builder: (context) => PatientDetailsView(patientID: criticalPatients[index]['_id'] ,),
                 ),
               );
             },

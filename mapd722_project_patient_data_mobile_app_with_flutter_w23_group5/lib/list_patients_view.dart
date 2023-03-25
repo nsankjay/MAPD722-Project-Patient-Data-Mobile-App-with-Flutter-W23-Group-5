@@ -105,13 +105,13 @@ class ListPatientsView extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 print('You Have clicked on Max Payne');
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const PatientDetailsView();
-                    },
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) {
+                //       //return const PatientDetailsView();
+                //     },
+                //   ),
+                // );
               },
               child: Container(
                 width: double.infinity,
@@ -145,13 +145,13 @@ class ListPatientsView extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 print('You Have clicked on Mona Sax');
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const PatientDetailsView();
-                    },
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) {
+                //       //return const PatientDetailsView();
+                //     },
+                //   ),
+                // );
               },
               child: Container(
                 width: double.infinity,
@@ -185,13 +185,13 @@ class ListPatientsView extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 print('You Have clicked on Alfred Woden');
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const PatientDetailsView();
-                    },
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) {
+                //       //return const PatientDetailsView();
+                //     },
+                //   ),
+                // );
               },
               child: Container(
                 width: double.infinity,

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
@@ -81,6 +80,37 @@ class _testList1State extends State<testList1> {
       appBar: AppBar(
         title: const Text('Patients List'),
       ),
+      floatingActionButton: Container(
+        height: 70,
+        width: 70,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Ink(
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: const Color.fromARGB(255, 233, 148, 139), width: 3.0),
+              color: const Color.fromARGB(255, 233, 148, 139),
+              shape: BoxShape.circle,
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(500.0),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return const AddPatientView();
+                    },
+                  ),
+                );
+              },
+              child: const Icon(
+                Icons.add,
+                size: 35,
+              ),
+            ),
+          ),
+        ),
+      ),
       drawer: SafeArea(
         child: Drawer(
           child: Column(
@@ -161,8 +191,12 @@ class _testList1State extends State<testList1> {
 
           return ListTile(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => PatientDetailsView(),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PatientDetailsView(
+                    patientID: patients[index]['_id'],
+                  ),
                 ),
               );
             },

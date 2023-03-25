@@ -4,12 +4,18 @@
 //  Project Authors - Sankjay Nithyanandalingam (301296000), Victor Quezada (301286477)
 //  Created on - 27/02/2023
 //  Modified Last - 17/03/2023
-//  Description - Patient Data Mobile App is a app developped using Flutter and its purpose is to help health care 
-//                professionals to maintain records of Patients and their Clinical Data. And also to Identify their health 
+//  Description - Patient Data Mobile App is a app developped using Flutter and its purpose is to help health care
+//                professionals to maintain records of Patients and their Clinical Data. And also to Identify their health
 //                condition at any given time.
 //  Version v1.1 - 05/03/2023
 //  Version v1.2 - 17/03/2023
 //
+
+// ignore_for_file: sized_box_for_whitespace
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'constants.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,8 +46,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+final TextEditingController userNameController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool passenable = true; //boolean value to track password view enable disable.
 
   @override
   Widget build(BuildContext context) {
@@ -98,28 +114,57 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 20.0,
               ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'User Name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+              Container(
+                height: 60,
+                child: TextField(
+                  controller: userNameController,
+                  decoration: InputDecoration(
+                    labelText: 'User Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
+                  //keyboardType: TextInputType.number,
+                  //inputFormatters: <TextInputFormatter> [FilteringTextInputFormatter.digitsOnly],
                 ),
-                //keyboardType: TextInputType.number,
-                //inputFormatters: <TextInputFormatter> [FilteringTextInputFormatter.digitsOnly],
               ),
               const SizedBox(
                 height: 10,
               ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+              Container(
+                height: 60,
+                child: TextField(
+                  controller: passwordController,
+                  obscureText:
+                      passenable, //if passenable == true, show **, else show password character
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    suffix: IconButton(
+                      onPressed: () {
+                        //add Icon button at end of TextField
+                        setState(() {
+                          //refresh UI
+                          if (passenable) {
+                            //if passenable == true, make it false
+                            passenable = false;
+                          } else {
+                            passenable =
+                                true; //if passenable == false, make it true
+                          }
+                        });
+                      },
+                      icon: Icon(passenable == true
+                          ? Icons.remove_red_eye
+                          : Icons.password),
+                    ),
+                    //eye icon if passenable = true, else, Icon is ***__
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
+                  //keyboardType: TextInputType.number,
+                  //inputFormatters: <TextInputFormatter> [FilteringTextInputFormatter.digitsOnly],
                 ),
-                //keyboardType: TextInputType.number,
-                //inputFormatters: <TextInputFormatter> [FilteringTextInputFormatter.digitsOnly],
               ),
               const SizedBox(
                 height: 10,
@@ -127,14 +172,26 @@ class LoginPage extends StatelessWidget {
 
               //! Login Button
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return const testList1();
-                      },
-                    ),
-                  );
+                onPressed: () async {
+                  //   Navigator.of(context).pushReplacement(
+                  //     MaterialPageRoute(
+                  //       builder: (BuildContext context) {
+                  //         return const testList1();
+                  //       },
+                  //     ),
+                  //   );
+                  int responseCode = await loginAPI();
+                  if (responseCode == 200) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return const testList1();
+                        },
+                      ),
+                    );
+                  } else {
+                    _showMyDialog(context);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -150,7 +207,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
 
-               const SizedBox(
+              const SizedBox(
                 height: 10,
               ),
 
@@ -184,4 +241,48 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<int> loginAPI() async {
+  var requestBody = json.encode({
+    "username": userNameController.text,
+    "password": passwordController.text,
+  });
+  print(requestBody);
+  final response = await http.post(Uri.parse(baseUrl! + "api/login"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Accept": "application/json",
+      },
+      body: requestBody);
+  print(response.body);
+  return response.statusCode;
+}
+
+Future<void> _showMyDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Login Error'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              //Text('Login Error'),
+              Text('User Name or Password Mismatch'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
