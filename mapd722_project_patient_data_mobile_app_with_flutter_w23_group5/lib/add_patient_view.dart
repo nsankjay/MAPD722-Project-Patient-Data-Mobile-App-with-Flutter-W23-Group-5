@@ -2,8 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_critical_patients_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_patients_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/main.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/register_user_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list1.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list_critical_patients_view.dart';
+import 'package:http/http.dart' as http;
+import 'constants.dart';
+import 'dart:convert';
+
+final TextEditingController addfirstNameController = TextEditingController();
+final TextEditingController addlastNameController = TextEditingController();
+final TextEditingController addDobController = TextEditingController();
+final TextEditingController addAddressController = TextEditingController();
+final TextEditingController addContactNoController = TextEditingController();
+final TextEditingController addEmailController = TextEditingController();
+final TextEditingController addEmergencyNameController =
+    TextEditingController();
+final TextEditingController addEmergencyNoController = TextEditingController();
+final TextEditingController addDepartmentController = TextEditingController();
+final TextEditingController addDoctorController = TextEditingController();
 
 class AddPatientView extends StatelessWidget {
   const AddPatientView({super.key});
@@ -46,9 +62,7 @@ class AddPatientView extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () {
-                  
-                },
+                onTap: () {},
                 leading: const Icon(Icons.document_scanner_rounded),
                 title: const Text(
                   'Add Patient',
@@ -131,6 +145,7 @@ class AddPatientView extends StatelessWidget {
 
                 //! Text Fields
                 TextField(
+                  controller: addfirstNameController,
                   decoration: InputDecoration(
                     labelText: 'First Name',
                     border: OutlineInputBorder(
@@ -144,6 +159,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addlastNameController,
                   decoration: InputDecoration(
                     labelText: 'Last Name',
                     border: OutlineInputBorder(
@@ -157,6 +173,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addDobController,
                   decoration: InputDecoration(
                     labelText: 'Date of Birth (dd/mm/yyyy)',
                     border: OutlineInputBorder(
@@ -170,6 +187,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addAddressController,
                   decoration: InputDecoration(
                     labelText: 'Address',
                     border: OutlineInputBorder(
@@ -183,6 +201,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addContactNoController,
                   decoration: InputDecoration(
                     labelText: 'Contact Number',
                     border: OutlineInputBorder(
@@ -196,6 +215,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addEmailController,
                   decoration: InputDecoration(
                     labelText: 'E-Mail',
                     border: OutlineInputBorder(
@@ -209,6 +229,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addEmergencyNameController,
                   decoration: InputDecoration(
                     labelText: 'Emergency Contact Name',
                     border: OutlineInputBorder(
@@ -222,6 +243,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addEmergencyNoController,
                   decoration: InputDecoration(
                     labelText: 'Emergency Contact Number',
                     border: OutlineInputBorder(
@@ -235,6 +257,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addDepartmentController,
                   decoration: InputDecoration(
                     labelText: 'Department',
                     border: OutlineInputBorder(
@@ -248,6 +271,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addDoctorController,
                   decoration: InputDecoration(
                     labelText: 'Attending Doctor',
                     border: OutlineInputBorder(
@@ -263,14 +287,26 @@ class AddPatientView extends StatelessWidget {
 
                 //! Save New Patient Button
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return const ListPatientsView();
-                        },
-                      ),
-                    );
+                  onPressed: () async {
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (BuildContext context) {
+                    //       return const ListPatientsView();
+                    //     },
+                    //   ),
+                    // );
+                    int responseCode = await addPatientAPI();
+                    if (responseCode == 200) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return const testList1();
+                          },
+                        ),
+                      );
+                    } else {
+                      _showMyDialogAddPatient(context);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
@@ -295,4 +331,56 @@ class AddPatientView extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<int> addPatientAPI() async {
+  var requestBody = json.encode({
+    "firstName": addfirstNameController.text,
+    "lastName": addlastNameController.text,
+    "dateOfBirth": addDobController.text,
+    "address": addAddressController.text,
+    "phoneNumber": addContactNoController.text,
+    "email": addEmailController.text,
+    "emergencyContactName": addEmergencyNameController.text,
+    "emergencyContactNumber": addEmergencyNoController.text,
+    "assignedDoctor": addDoctorController.text,
+    "department": addDepartmentController.text,
+  });
+  print(requestBody);
+  final response = await http.post(Uri.parse(baseUrl! + "patients"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Accept": "application/json",
+      },
+      body: requestBody);
+  print(response.body);
+  return response.statusCode;
+}
+
+Future<void> _showMyDialogAddPatient(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Missing Data'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              //Text('Login Error'),
+              Text('All fields are mandatory. please enter data'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

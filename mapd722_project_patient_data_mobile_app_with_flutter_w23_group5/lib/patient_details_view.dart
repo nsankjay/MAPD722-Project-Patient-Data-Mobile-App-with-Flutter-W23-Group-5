@@ -307,7 +307,7 @@ class _PatientDetailsViewState extends State<PatientDetailsView> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width / 5,
+                        width: MediaQuery.of(context).size.width / 2.5,
                         height: MediaQuery.of(context).size.height / 35,
                         child: Text(
                           emergencyContactName,

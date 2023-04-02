@@ -156,7 +156,7 @@ class RegisterUserView extends StatelessWidget {
                   );
                 } else {
                   _showMyDialog(context);
-                } 
+                }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
