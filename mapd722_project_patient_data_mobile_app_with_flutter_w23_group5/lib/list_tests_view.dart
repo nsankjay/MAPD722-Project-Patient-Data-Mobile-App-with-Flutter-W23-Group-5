@@ -31,13 +31,13 @@ class ListTestsView extends StatelessWidget {
            
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const ClinicalTestDataView();
-                    },
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) {
+                //       return const ClinicalTestDataView();
+                //     },
+                //   ),
+                // );
               },
               child: Container(
                 width: double.infinity,
@@ -70,13 +70,13 @@ class ListTestsView extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const ClinicalTestDataView();
-                    },
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) {
+                //       return const ClinicalTestDataView();
+                //     },
+                //   ),
+                // );
               },
               child: Container(
                 width: double.infinity,

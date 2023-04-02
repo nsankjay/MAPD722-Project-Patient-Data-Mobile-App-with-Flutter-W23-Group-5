@@ -178,7 +178,12 @@ class _TestListTestsViewState extends State<TestListTestsView> {
           return ListTile(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ClinicalTestDataView(),
+                  builder: (context) => ClinicalTestDataView(
+                    patientID: widget.patientID,
+                    patientFirstName: widget.patientFirstName,
+                    patientLastName: widget.patientLastname,
+                    testID: patientTests[index]['_id'], 
+                  ),
                 ),
               );
             },

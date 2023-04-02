@@ -144,7 +144,7 @@ class _PatientDetailsViewState extends State<PatientDetailsView> {
                     height: 20.0,
                   ),
 
-                  //! Text Labels nad Result Labels to display patient info
+                  //! Text Labels and Result Labels to display patient info
                   Row(
                     children: [
                       Text(
