@@ -15,8 +15,7 @@ final TextEditingController addDobController = TextEditingController();
 final TextEditingController addAddressController = TextEditingController();
 final TextEditingController addContactNoController = TextEditingController();
 final TextEditingController addEmailController = TextEditingController();
-final TextEditingController addEmergencyNameController =
-    TextEditingController();
+final TextEditingController addEmergencyNameController = TextEditingController();
 final TextEditingController addEmergencyNoController = TextEditingController();
 final TextEditingController addDepartmentController = TextEditingController();
 final TextEditingController addDoctorController = TextEditingController();
@@ -304,6 +303,16 @@ class AddPatientView extends StatelessWidget {
                           },
                         ),
                       );
+                      addfirstNameController.clear();
+                      addlastNameController.clear();
+                      addDobController.clear();
+                      addAddressController.clear();
+                      addContactNoController.clear();
+                      addEmailController.clear();
+                      addEmergencyNameController.clear();
+                      addEmergencyNoController.clear();
+                      addDepartmentController.clear();
+                      addDoctorController.clear();
                     } else {
                       _showMyDialogAddPatient(context);
                     }

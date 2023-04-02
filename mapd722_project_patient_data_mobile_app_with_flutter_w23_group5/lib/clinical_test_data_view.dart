@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'constants.dart';
 import 'dart:math';
-import 'package:flutter/material.dart';
+
 
 String testPatientId = "patientId";
 String testTestId = "_id";
@@ -213,6 +213,7 @@ class _ClinicalTestDataViewState extends State<ClinicalTestDataView> {
                   ),
     
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         'Blood Oxygen Level (%): ',
@@ -222,12 +223,16 @@ class _ClinicalTestDataViewState extends State<ClinicalTestDataView> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        bloodOxygenLevel,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        //height: MediaQuery.of(context).size.height / 20,
+                        child: Text(
+                          bloodOxygenLevel,
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],

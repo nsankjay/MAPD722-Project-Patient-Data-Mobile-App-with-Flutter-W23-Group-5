@@ -145,18 +145,23 @@ class RegisterUserView extends StatelessWidget {
                   //     },
                   //   ),
                   // );
-                int responseCode = await registerAPI();
+                  int responseCode = await registerAPI();
                   if (responseCode == 200) {
                     Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return const LoginPage();
-                      },
-                    ),
-                  );
-                } else {
-                  _showMyDialog(context);
-                }
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return const LoginPage();
+                        },
+                      ),
+                    );
+                    firstNameController.clear();
+                    lastNameController.clear();
+                    eMailController.clear();
+                    userNameController.clear();
+                    passwordController.clear();
+                  } else {
+                    _showMyDialog(context);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -179,24 +184,21 @@ class RegisterUserView extends StatelessWidget {
   }
 }
 
-Future<int> registerAPI () async {
-
+Future<int> registerAPI() async {
   var requestBody = json.encode({
-    "firstName":firstNameController.text,
-    "lastName":lastNameController.text,
-    "email":eMailController.text,
-    "username":userNameController.text,
-    "password":passwordController.text,
+    "firstName": firstNameController.text,
+    "lastName": lastNameController.text,
+    "email": eMailController.text,
+    "username": userNameController.text,
+    "password": passwordController.text,
   });
   print(requestBody);
-  final response = await http.post(
-      Uri.parse(baseUrl!+"api/register"),
+  final response = await http.post(Uri.parse(baseUrl! + "api/register"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         "Accept": "application/json",
       },
-      body:  requestBody
-  );
+      body: requestBody);
   print(response.body);
   return response.statusCode;
 }

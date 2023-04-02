@@ -1,11 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_tests_view.dart';
+import 'package:http/http.dart' as http;
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/patient_details_view.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list_tests_view.dart';
+import 'constants.dart';
+import 'dart:convert';
+import 'dart:math';
 
-class AddClinicalDataView extends StatelessWidget {
-  const AddClinicalDataView({super.key});
+final TextEditingController addTestDateController = TextEditingController();
+final TextEditingController addBloodPressureController = TextEditingController();
+final TextEditingController addRespiratoryController = TextEditingController();
+final TextEditingController addBloodOxygenController = TextEditingController();
+final TextEditingController addHeartBeatController = TextEditingController();
+final TextEditingController addNurseNameController = TextEditingController();
+
+class AddClinicalDataView extends StatefulWidget {
+
+  final String addTestpatientID;
+  final String addTestPatientFirstName;
+  final String addTestPatientLastName;
+
+  const AddClinicalDataView({super.key,
+  required this.addTestpatientID,
+  required this.addTestPatientFirstName,
+  required this.addTestPatientLastName,
+
+  });
+
+  @override
+  State<AddClinicalDataView> createState() => _AddClinicalDataViewState();
+}
+
+class _AddClinicalDataViewState extends State<AddClinicalDataView> {
 
   @override
   Widget build(BuildContext context) {
+
+    String patientIDforAPI = widget.addTestpatientID;
+
     return Scaffold(
       appBar: AppBar(
         //automaticallyImplyLeading: false,
@@ -55,6 +87,7 @@ class AddClinicalDataView extends StatelessWidget {
 
                 //! Text Fields
                 TextField(
+                  controller: addTestDateController,
                   decoration: InputDecoration(
                     labelText: 'Test Date (dd/mm/yyyy)',
                     border: OutlineInputBorder(
@@ -68,6 +101,7 @@ class AddClinicalDataView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addBloodPressureController,
                   decoration: InputDecoration(
                     labelText: 'Blood Pressure - mmhg',
                     border: OutlineInputBorder(
@@ -81,6 +115,7 @@ class AddClinicalDataView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addRespiratoryController,
                   decoration: InputDecoration(
                     labelText: 'Respiratory Rate - /min',
                     border: OutlineInputBorder(
@@ -94,6 +129,7 @@ class AddClinicalDataView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addBloodOxygenController,
                   decoration: InputDecoration(
                     labelText: 'Blood Oxygen Level (%)',
                     border: OutlineInputBorder(
@@ -107,6 +143,7 @@ class AddClinicalDataView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addHeartBeatController,
                   decoration: InputDecoration(
                     labelText: 'Heart-Beat Rate - /min',
                     border: OutlineInputBorder(
@@ -120,6 +157,7 @@ class AddClinicalDataView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  controller: addNurseNameController,
                   decoration: InputDecoration(
                     labelText: 'Nurse Name',
                     border: OutlineInputBorder(
@@ -135,14 +173,35 @@ class AddClinicalDataView extends StatelessWidget {
 
                 //! Save New Clinical Data
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return const ListTestsView();
-                        },
-                      ),
-                    );
+                  onPressed: () async {
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (BuildContext context) {
+                    //       return const ListTestsView();
+                    //     },
+                    //   ),
+                    // );
+                    int responseCode = await addClinicalDataAPI();
+                    if (responseCode == 200) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => TestListTestsView(
+                            patientID: widget.addTestpatientID,
+                            patientFirstName: widget.addTestPatientFirstName,
+                            patientLastname: widget.addTestPatientLastName,
+                            
+                          ),
+                        ),
+                      );
+                      addTestDateController.clear();
+                      addBloodPressureController.clear();
+                      addRespiratoryController.clear();
+                      addBloodOxygenController.clear();
+                      addHeartBeatController.clear();
+                      addNurseNameController.clear();
+                    } else {
+                      _showMyDialogAddClinicalData(context);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
@@ -168,3 +227,71 @@ class AddClinicalDataView extends StatelessWidget {
     );
   }
 }
+
+Future<int> addClinicalDataAPI() async {
+
+  var requestBody = json.encode({
+    "patientId": patientId,
+    "dateTime": addTestDateController.text,
+    "bloodPressure": addBloodPressureController.text,
+    "respiratoryRate": addRespiratoryController.text,
+    "bloodOxygenLevel": addBloodOxygenController.text,
+    "heartbeatRate": addHeartBeatController.text,
+    "nurseName": addNurseNameController.text,
+    //add Critical status
+  });
+  print(requestBody);
+  final response = await http.post(Uri.parse(baseUrl! + "patients/clinicalRecords"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Accept": "application/json",
+      },
+      body: requestBody);
+  print(response.body);
+  return response.statusCode;
+}
+
+// Future<int> updateCriticalStatusAPI() async {
+
+//   var requestBody2 = json.encode({
+//     "criticalStatus": //need to add a variable,
+//   });
+//   print(requestBody2);
+//   final response = await http.post(Uri.parse(baseUrl! + "patients/criticalStatus/" + patientId),
+//       headers: <String, String>{
+//         'Content-Type': 'application/json; charset=UTF-8',
+//         "Accept": "application/json",
+//       },
+//       body: requestBody2);
+//   print(response.body);
+//   return response.statusCode;
+// }
+
+Future<void> _showMyDialogAddClinicalData(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Missing Data'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              //Text('Login Error'),
+              Text('All fields are mandatory. please enter data'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+

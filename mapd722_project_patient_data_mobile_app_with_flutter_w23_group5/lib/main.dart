@@ -189,6 +189,8 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                     );
+                    userNameController.clear();
+                    passwordController.clear();
                   } else {
                     _showMyDialog(context);
                   }

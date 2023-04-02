@@ -73,13 +73,14 @@ class _TestListTestsViewState extends State<TestListTestsView> {
             child: InkWell(
               borderRadius: BorderRadius.circular(500.0),
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const AddClinicalDataView();
-                    },
+                 Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => AddClinicalDataView(
+                    addTestpatientID: widget.patientID,
+                    addTestPatientFirstName: widget.patientFirstName,
+                    addTestPatientLastName: widget.patientLastname,
                   ),
-                );
+                ),
+              );
               },
               child: const Icon(
                 Icons.add,
