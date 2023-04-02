@@ -18,33 +18,6 @@ class testList1 extends StatefulWidget {
 }
 
 class _testList1State extends State<testList1> {
-  //var patientList;
-  // List patientsList = [];
-
-  // @override
-  // void initState() {
-  //   //TODO: implement init state
-  //   super.initState();
-  //   getData();
-  // }
-
-  // void getData() async {
-  //   try {
-  //     var response = await Dio().get('http://localhost:3500/patients');
-  //     if(response.statusCode == 200){
-
-  //       setState(() {
-  //         patientsList = response.data[""];
-  //       });
-
-  //     } else{
-  //       print(response.statusCode);
-  //     }
-  //     print(response);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   List patients = [];
   bool isLoading = false;

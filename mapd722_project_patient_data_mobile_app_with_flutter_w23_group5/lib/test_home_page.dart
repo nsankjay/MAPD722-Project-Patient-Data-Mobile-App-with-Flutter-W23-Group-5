@@ -158,16 +158,16 @@ class _TestHomePageState extends State<TestHomePage> {
             GestureDetector(
               onTap: () {
                 print('You Have clicked on Max Payne');
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const TestDescritionPage(
-                        title: 'Max Payne',
-                        imagePath: 'images/slot_cherry_image.jpg',
-                      );
-                    },
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) {
+                //       return const TestDescritionPage(
+                //         title: 'Max Payne',
+                //         imagePath: 'images/slot_cherry_image.jpg',
+                //       );
+                //     },
+                //   ),
+                // );
               },
               child: Container(
                 width: double.infinity,
@@ -203,16 +203,16 @@ class _TestHomePageState extends State<TestHomePage> {
             GestureDetector(
               onTap: () {
                 print('You Have clicked on Mona Sax');
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const TestDescritionPage(
-                        title: 'Mona Sax',
-                        imagePath: 'images/slot_7_image.jpg',
-                      );
-                    },
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) {
+                //       return const TestDescritionPage(
+                //         title: 'Mona Sax',
+                //         imagePath: 'images/slot_7_image.jpg',
+                //       );
+                //     },
+                //   ),
+                // );
               },
               child: Container(
                 width: double.infinity,
@@ -248,16 +248,16 @@ class _TestHomePageState extends State<TestHomePage> {
             GestureDetector(
               onTap: () {
                 print('You Have clicked on Alfred Woden');
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const TestDescritionPage(
-                        title: 'Alfred Woden',
-                        imagePath: 'images/slot_lemon_image.jpg',
-                      );
-                    },
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) {
+                //       return const TestDescritionPage(
+                //         title: 'Alfred Woden',
+                //         imagePath: 'images/slot_lemon_image.jpg',
+                //       );
+                //     },
+                //   ),
+                // );
               },
               child: Container(
                 width: double.infinity,

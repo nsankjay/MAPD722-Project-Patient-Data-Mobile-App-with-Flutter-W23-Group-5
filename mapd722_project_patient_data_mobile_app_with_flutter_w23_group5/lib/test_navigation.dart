@@ -19,7 +19,7 @@ class _NavigationState extends State<Navigation> {
   }
 
   final List<Widget> _pages = [
-    const ListPatientsView(),
+    //const ListPatientsView(),
     const LoginPage(),
   ];
 
