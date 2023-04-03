@@ -144,6 +144,7 @@ class AddPatientView extends StatelessWidget {
 
                 //! Text Fields
                 TextField(
+                  key: const Key("firstNameField"),
                   controller: addfirstNameController,
                   decoration: InputDecoration(
                     labelText: 'First Name',
@@ -158,6 +159,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("lastNameField"),
                   controller: addlastNameController,
                   decoration: InputDecoration(
                     labelText: 'Last Name',
@@ -172,6 +174,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("dobField"),
                   controller: addDobController,
                   decoration: InputDecoration(
                     labelText: 'Date of Birth (dd/mm/yyyy)',
@@ -186,6 +189,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("addressField"),
                   controller: addAddressController,
                   decoration: InputDecoration(
                     labelText: 'Address',
@@ -200,6 +204,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("contactNoField"),
                   controller: addContactNoController,
                   decoration: InputDecoration(
                     labelText: 'Contact Number',
@@ -214,6 +219,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("emailField"),
                   controller: addEmailController,
                   decoration: InputDecoration(
                     labelText: 'E-Mail',
@@ -228,6 +234,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("emergencyContactNameField"),
                   controller: addEmergencyNameController,
                   decoration: InputDecoration(
                     labelText: 'Emergency Contact Name',
@@ -242,6 +249,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("emergencyContactNoField"),
                   controller: addEmergencyNoController,
                   decoration: InputDecoration(
                     labelText: 'Emergency Contact Number',
@@ -256,6 +264,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("departmentField"),
                   controller: addDepartmentController,
                   decoration: InputDecoration(
                     labelText: 'Department',
@@ -270,6 +279,7 @@ class AddPatientView extends StatelessWidget {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("doctorField"),
                   controller: addDoctorController,
                   decoration: InputDecoration(
                     labelText: 'Attending Doctor',
@@ -317,6 +327,7 @@ class AddPatientView extends StatelessWidget {
                       _showMyDialogAddPatient(context);
                     }
                   },
+                  key: const Key("createPatientBtn"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,

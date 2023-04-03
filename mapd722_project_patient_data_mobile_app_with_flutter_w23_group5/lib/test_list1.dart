@@ -54,6 +54,7 @@ class _testList1State extends State<testList1> {
         title: const Text('Patients List'),
       ),
       floatingActionButton: Container(
+        key: const Key("addNewPatientBtn"), //for unit test
         height: 70,
         width: 70,
         child: Material(

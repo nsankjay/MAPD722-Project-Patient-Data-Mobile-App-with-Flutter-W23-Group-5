@@ -87,6 +87,7 @@ class _AddClinicalDataViewState extends State<AddClinicalDataView> {
 
                 //! Text Fields
                 TextField(
+                  key: const Key("testDateField"), //for unit test
                   controller: addTestDateController,
                   decoration: InputDecoration(
                     labelText: 'Test Date (dd/mm/yyyy)',
@@ -101,6 +102,7 @@ class _AddClinicalDataViewState extends State<AddClinicalDataView> {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("bloodPressureField"), //for unit test
                   controller: addBloodPressureController,
                   decoration: InputDecoration(
                     labelText: 'Blood Pressure - mmhg',
@@ -115,6 +117,7 @@ class _AddClinicalDataViewState extends State<AddClinicalDataView> {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("respiratoryField"), //for unit test
                   controller: addRespiratoryController,
                   decoration: InputDecoration(
                     labelText: 'Respiratory Rate - /min',
@@ -129,6 +132,7 @@ class _AddClinicalDataViewState extends State<AddClinicalDataView> {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("bloodOxygenField"), //for unit test
                   controller: addBloodOxygenController,
                   decoration: InputDecoration(
                     labelText: 'Blood Oxygen Level (%)',
@@ -143,6 +147,7 @@ class _AddClinicalDataViewState extends State<AddClinicalDataView> {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("heartBeatField"), //for unit test
                   controller: addHeartBeatController,
                   decoration: InputDecoration(
                     labelText: 'Heart-Beat Rate - /min',
@@ -157,6 +162,7 @@ class _AddClinicalDataViewState extends State<AddClinicalDataView> {
                   height: 10,
                 ),
                 TextField(
+                  key: const Key("nurseField"), //for unit test
                   controller: addNurseNameController,
                   decoration: InputDecoration(
                     labelText: 'Nurse Name',
@@ -203,6 +209,7 @@ class _AddClinicalDataViewState extends State<AddClinicalDataView> {
                       _showMyDialogAddClinicalData(context);
                     }
                   },
+                  key: const Key("saveTestBtn"), //for unit test
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,

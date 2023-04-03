@@ -59,6 +59,7 @@ class _TestListTestsViewState extends State<TestListTestsView> {
         title: Text("Tests of ${widget.patientFirstName} $lasstName", textScaleFactor: 1,),
       ),
       floatingActionButton: Container(
+        key: const Key("addNewTestBtn"), //for unit test
         height: 70,
         width: 70,
         child: Material(

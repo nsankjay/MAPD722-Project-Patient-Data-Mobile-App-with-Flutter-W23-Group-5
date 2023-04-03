@@ -65,6 +65,7 @@ class RegisterUserView extends StatelessWidget {
 
               //! Text Fields
               TextField(
+                key: const Key("firstNameField"),
                 controller: firstNameController,
                 decoration: InputDecoration(
                   labelText: 'First Name',
@@ -79,6 +80,7 @@ class RegisterUserView extends StatelessWidget {
                 height: 10,
               ),
               TextField(
+                key: const Key("lastNameField"),
                 controller: lastNameController,
                 decoration: InputDecoration(
                   labelText: 'Last Name',
@@ -93,6 +95,7 @@ class RegisterUserView extends StatelessWidget {
                 height: 10,
               ),
               TextField(
+                key: const Key("emailField"),
                 controller: eMailController,
                 decoration: InputDecoration(
                   labelText: 'E-Mail',
@@ -107,6 +110,7 @@ class RegisterUserView extends StatelessWidget {
                 height: 10,
               ),
               TextField(
+                key: const Key("userNameField"),
                 controller: userNameController,
                 decoration: InputDecoration(
                   labelText: 'User Name',
@@ -121,6 +125,7 @@ class RegisterUserView extends StatelessWidget {
                 height: 10,
               ),
               TextField(
+                key: const Key("passwordField"),
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -163,6 +168,7 @@ class RegisterUserView extends StatelessWidget {
                     _showMyDialog(context);
                   }
                 },
+                key: const Key("registerUserBtn"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,

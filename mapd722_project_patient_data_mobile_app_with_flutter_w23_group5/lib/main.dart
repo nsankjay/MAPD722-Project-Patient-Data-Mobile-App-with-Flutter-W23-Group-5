@@ -117,6 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 height: 60,
                 child: TextField(
+                  key: const Key("userNameField"),
                   controller: userNameController,
                   decoration: InputDecoration(
                     labelText: 'User Name',
@@ -134,6 +135,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 height: 60,
                 child: TextField(
+                  key: const Key("passwordField"),
                   controller: passwordController,
                   obscureText:
                       passenable, //if passenable == true, show **, else show password character
@@ -195,6 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                     _showMyDialog(context);
                   }
                 },
+                key: const Key("loginBtn"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
