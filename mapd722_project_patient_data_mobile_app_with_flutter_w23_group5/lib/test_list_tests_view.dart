@@ -8,19 +8,25 @@ import 'dart:convert';
 
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list1.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list_critical_patients_view.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+RefreshController _testRefreshController = RefreshController(initialRefresh: false);
 
 class TestListTestsView extends StatefulWidget {
   final String patientID;
   final String patientFirstName;
   final String patientLastname;
-  const TestListTestsView({super.key, required this.patientID, required this.patientFirstName, required this.patientLastname});
+  const TestListTestsView(
+      {super.key,
+      required this.patientID,
+      required this.patientFirstName,
+      required this.patientLastname});
 
   @override
   State<TestListTestsView> createState() => _TestListTestsViewState();
 }
 
 class _TestListTestsViewState extends State<TestListTestsView> {
-
   List patientTests = [];
   bool isLoading = false;
   //String patienId = widget.patientID;
@@ -56,7 +62,10 @@ class _TestListTestsViewState extends State<TestListTestsView> {
     lasstName = widget.patientLastname;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tests of ${widget.patientFirstName} $lasstName", textScaleFactor: 1,),
+        title: Text(
+          "Tests of ${widget.patientFirstName} $lasstName",
+          textScaleFactor: 1,
+        ),
       ),
       floatingActionButton: Container(
         key: const Key("addNewTestBtn"), //for unit test
@@ -74,14 +83,16 @@ class _TestListTestsViewState extends State<TestListTestsView> {
             child: InkWell(
               borderRadius: BorderRadius.circular(500.0),
               onTap: () {
-                 Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => AddClinicalDataView(
-                    addTestpatientID: widget.patientID,
-                    addTestPatientFirstName: widget.patientFirstName,
-                    addTestPatientLastName: widget.patientLastname,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddClinicalDataView(
+                      addTestpatientID: widget.patientID,
+                      addTestPatientFirstName: widget.patientFirstName,
+                      addTestPatientLastName: widget.patientLastname,
+                    ),
                   ),
-                ),
-              );
+                );
               },
               child: const Icon(
                 Icons.add,
@@ -91,112 +102,46 @@ class _TestListTestsViewState extends State<TestListTestsView> {
           ),
         ),
       ),
-      // drawer: SafeArea(
-      //   child: Drawer(
-      //     child: Column(
-      //       children: [
-      //         const DrawerHeader(
-      //           decoration: BoxDecoration(
-      //             color: Colors.blue,
-      //           ),
-      //           child: ListTile(
-      //             title: Text(
-      //               'WeCare App',
-      //               style: TextStyle(color: Colors.white, fontSize: 20.0),
-      //             ),
-      //           ),
-      //         ),
-      //         ListTile(
-      //           onTap: () {
-      //             Navigator.of(context).push(
-      //               MaterialPageRoute(
-      //                 builder: (BuildContext context) {
-      //                   return const testList1();
-      //                 },
-      //               ),
-      //             );
-      //           },
-      //           leading: const Icon(Icons.person),
-      //           title: const Text(
-      //             'Patients List',
-      //           ),
-      //         ),
-      //         ListTile(
-      //           onTap: () {
-      //             Navigator.of(context).push(
-      //               MaterialPageRoute(
-      //                 builder: (BuildContext context) {
-      //                   return const AddPatientView();
-      //                 },
-      //               ),
-      //             );
-      //           },
-      //           leading: const Icon(Icons.document_scanner_rounded),
-      //           title: const Text(
-      //             'Add Patient',
-      //           ),
-      //         ),
-      //         ListTile(
-      //           onTap: () {
-      //             Navigator.of(context).pushReplacement(
-      //               MaterialPageRoute(
-      //                 builder: (BuildContext context) {
-      //                   return const TestListCriticalPatientsView();
-      //                 },
-      //               ),
-      //             );
-      //           },
-      //           leading: const Icon(Icons.crisis_alert_rounded),
-      //           title: const Text(
-      //             'Critical Patients',
-      //           ),
-      //         ),
-      //         ListTile(
-      //           onTap: () {
-      //             Navigator.of(context).pushReplacement(
-      //               MaterialPageRoute(
-      //                 builder: (BuildContext context) {
-      //                   return const LoginPage();
-      //                 },
-      //               ),
-      //             );
-      //           },
-      //           leading: const Icon(Icons.logout_rounded),
-      //           title: const Text(
-      //             'Logout',
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemCount: patientTests == null ? 0 : patientTests.length,
-        itemBuilder: (context, index) {
-          //return Text('List item $index');
-          //var firstName = patients[0];
-
-          return ListTile(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ClinicalTestDataView(
-                    patientID: widget.patientID,
-                    patientFirstName: widget.patientFirstName,
-                    patientLastName: widget.patientLastname,
-                    testID: patientTests[index]['_id'], 
-                  ),
-                ),
-              );
-            },
-            title: Text(patientTests[index]['dateTime']),
-            subtitle: Text(patientTests[index]['_id']),
-            trailing: const Icon(Icons.arrow_forward_ios_rounded),
-          );
+      body: SmartRefresher(
+        controller: _testRefreshController,
+        enablePullDown: true,
+        enablePullUp: true,
+        onRefresh: () {
+          _testRefreshController.refreshCompleted(resetFooterState: false);
+          
+          fetchPatientTests();
+          
         },
-        // separatorBuilder: (BuildContext context, int index) {
-        //   return const Divider();
-        // },
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: patientTests == null ? 0 : patientTests.length,
+          itemBuilder: (context, index) {
+            //return Text('List item $index');
+            //var firstName = patients[0];
+
+            return ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClinicalTestDataView(
+                      patientID: widget.patientID,
+                      patientFirstName: widget.patientFirstName,
+                      patientLastName: widget.patientLastname,
+                      testID: patientTests[index]['_id'],
+                    ),
+                  ),
+                );
+              },
+              title: Text(patientTests[index]['dateTime']),
+              subtitle: Text(patientTests[index]['_id']),
+              trailing: const Icon(Icons.arrow_forward_ios_rounded),
+            );
+          },
+          // separatorBuilder: (BuildContext context, int index) {
+          //   return const Divider();
+          // },
+        ),
       ),
     );
   }

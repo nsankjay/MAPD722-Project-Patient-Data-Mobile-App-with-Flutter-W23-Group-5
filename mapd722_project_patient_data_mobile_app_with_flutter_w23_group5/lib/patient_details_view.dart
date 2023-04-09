@@ -7,8 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_tests_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list_tests_view.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'constants.dart';
+
+RefreshController _patientDetailsRefreshController = RefreshController(initialRefresh: false);
 
 String patientId = "patientID";
 String firstName = "firstName";

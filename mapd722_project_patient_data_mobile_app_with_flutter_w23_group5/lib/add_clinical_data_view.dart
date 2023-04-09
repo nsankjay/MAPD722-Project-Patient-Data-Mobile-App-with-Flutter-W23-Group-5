@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/clinical_test_data_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_tests_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/patient_details_view.dart';
@@ -8,23 +9,23 @@ import 'dart:convert';
 import 'dart:math';
 
 final TextEditingController addTestDateController = TextEditingController();
-final TextEditingController addBloodPressureController = TextEditingController();
+final TextEditingController addBloodPressureController =
+    TextEditingController();
 final TextEditingController addRespiratoryController = TextEditingController();
 final TextEditingController addBloodOxygenController = TextEditingController();
 final TextEditingController addHeartBeatController = TextEditingController();
 final TextEditingController addNurseNameController = TextEditingController();
 
 class AddClinicalDataView extends StatefulWidget {
-
   final String addTestpatientID;
   final String addTestPatientFirstName;
   final String addTestPatientLastName;
 
-  const AddClinicalDataView({super.key,
-  required this.addTestpatientID,
-  required this.addTestPatientFirstName,
-  required this.addTestPatientLastName,
-
+  const AddClinicalDataView({
+    super.key,
+    required this.addTestpatientID,
+    required this.addTestPatientFirstName,
+    required this.addTestPatientLastName,
   });
 
   @override
@@ -32,10 +33,8 @@ class AddClinicalDataView extends StatefulWidget {
 }
 
 class _AddClinicalDataViewState extends State<AddClinicalDataView> {
-
   @override
   Widget build(BuildContext context) {
-
     String patientIDforAPI = widget.addTestpatientID;
 
     return Scaffold(
@@ -189,16 +188,17 @@ class _AddClinicalDataViewState extends State<AddClinicalDataView> {
                     // );
                     int responseCode = await addClinicalDataAPI();
                     if (responseCode == 200) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => TestListTestsView(
-                            patientID: widget.addTestpatientID,
-                            patientFirstName: widget.addTestPatientFirstName,
-                            patientLastname: widget.addTestPatientLastName,
-                            
-                          ),
-                        ),
-                      );
+                      Navigator.pop(context);
+                      // Navigator.of(context).pushReplacement(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => TestListTestsView(
+                      //       patientID: widget.addTestpatientID,
+                      //       patientFirstName: widget.addTestPatientFirstName,
+                      //       patientLastname: widget.addTestPatientLastName,
+
+                      //     ),
+                      //   ),
+                      // );
                       addTestDateController.clear();
                       addBloodPressureController.clear();
                       addRespiratoryController.clear();
@@ -236,6 +236,49 @@ class _AddClinicalDataViewState extends State<AddClinicalDataView> {
 }
 
 Future<int> addClinicalDataAPI() async {
+  final List<String> splittedBloodPressure =
+      addBloodPressureController.text.split('/');
+
+  bool criticalStatus;
+
+  if (90 <= int.parse(splittedBloodPressure[0]) &&
+      120 >= int.parse(splittedBloodPressure[0]) &&
+      60 <= int.parse(splittedBloodPressure[1]) &&
+      80 >= int.parse(splittedBloodPressure[1]) &&
+      12 <= int.parse(addRespiratoryController.text) &&
+      16 >= int.parse(addRespiratoryController.text) &&
+      95 <= int.parse(addBloodOxygenController.text) &&
+      100 >= int.parse(addBloodOxygenController.text) &&
+      60 <= int.parse(addHeartBeatController.text) &&
+      100 >= int.parse(addHeartBeatController.text)) {
+    criticalStatus = false;
+    var requestBody = json.encode({
+      "criticalStatus": criticalStatus,
+    });
+    print(requestBody);
+    final response = await http.put(
+        Uri.parse(baseUrl! + "patients/criticalStatus/$patientId"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Accept": "application/json",
+        },
+        body: requestBody);
+    print(response.body);
+  } else {
+    criticalStatus = true;
+    var requestBody = json.encode({"criticalStatus": criticalStatus});
+    print(requestBody);
+    final response = await http.put(
+        Uri.parse(baseUrl! + "patients/criticalStatus/$patientId"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Accept": "application/json",
+        },
+        body: requestBody);
+    print(response.body);
+  }
+
+  print(criticalStatus);
 
   var requestBody = json.encode({
     "patientId": patientId,
@@ -245,15 +288,17 @@ Future<int> addClinicalDataAPI() async {
     "bloodOxygenLevel": addBloodOxygenController.text,
     "heartbeatRate": addHeartBeatController.text,
     "nurseName": addNurseNameController.text,
+    "criticalStatus": criticalStatus
     //add Critical status
   });
   print(requestBody);
-  final response = await http.post(Uri.parse(baseUrl! + "patients/clinicalRecords"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Accept": "application/json",
-      },
-      body: requestBody);
+  final response =
+      await http.post(Uri.parse(baseUrl! + "patients/clinicalRecords"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            "Accept": "application/json",
+          },
+          body: requestBody);
   print(response.body);
   return response.statusCode;
 }
@@ -301,4 +346,3 @@ Future<void> _showMyDialogAddClinicalData(BuildContext context) async {
     },
   );
 }
-

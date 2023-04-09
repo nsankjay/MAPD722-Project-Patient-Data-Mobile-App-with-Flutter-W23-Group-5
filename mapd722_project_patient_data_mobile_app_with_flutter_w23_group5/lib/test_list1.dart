@@ -18,7 +18,6 @@ class testList1 extends StatefulWidget {
 }
 
 class _testList1State extends State<testList1> {
-
   List patients = [];
   bool isLoading = false;
 
@@ -156,34 +155,61 @@ class _testList1State extends State<testList1> {
           ),
         ),
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemCount: patients == null ? 0 : patients.length,
-        itemBuilder: (context, index) {
-          //return Text('List item $index');
-          //var firstName = patients[0];
+      body: Column(
+        children: [
+          TextField(
+            onChanged: (value) {
+              //patients.where((food) => toLowerCase().contains(userInputValue.toLowerCase()).toList();
+              for (var i = 0; i < patients.length; i++) {
+                if (patients[i]["firstName"] == value) {
+                  print('Using loop: ${patients[i]["firstName"]}');
 
-          return ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PatientDetailsView(
-                    patientID: patients[index]['_id'],
-                  ),
-                ),
-              );
+                  // Found the person, stop the loop
+
+                  return;
+                } else {
+                  print('Using loop: ${patients[i]["firstName"]}');
+                  patients.remove(i);
+                  setState(() {
+                    fetchPatient();
+                  });
+                }
+              }
             },
-            title: Text(patients[index]['firstName'] +
-                " " +
-                patients[index]['lastName']),
-            subtitle: Text(patients[index]['_id']),
-            trailing: const Icon(Icons.arrow_forward_ios_rounded),
-          );
-        },
-        // separatorBuilder: (BuildContext context, int index) {
-        //   return const Divider();
-        // },
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: patients == null ? 0 : patients.length,
+              itemBuilder: (context, index) {
+                //return Text('List item $index');
+                //var firstName = patients[0];
+
+                return ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PatientDetailsView(
+                          patientID: patients[index]['_id'],
+                        ),
+                      ),
+                    );
+                  },
+                  title: Text(patients[index]['firstName'] +
+                      " " +
+                      patients[index]['lastName']),
+                  subtitle: Text(patients[index]['_id']),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                );
+              },
+              // separatorBuilder: (BuildContext context, int index) {
+              //   return const Divider();
+              // },
+            ),
+          ),
+        ],
       ),
     );
   }
