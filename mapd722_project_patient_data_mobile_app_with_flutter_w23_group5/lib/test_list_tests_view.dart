@@ -102,7 +102,8 @@ class _TestListTestsViewState extends State<TestListTestsView> {
           ),
         ),
       ),
-      body: SmartRefresher(
+      body: 
+      SmartRefresher(
         controller: _testRefreshController,
         enablePullDown: true,
         enablePullUp: true,

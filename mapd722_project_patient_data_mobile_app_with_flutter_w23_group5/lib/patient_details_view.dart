@@ -11,7 +11,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'constants.dart';
 
-RefreshController _patientDetailsRefreshController = RefreshController(initialRefresh: false);
+RefreshController _patientDetailsRefreshController =
+    RefreshController(initialRefresh: false);
 
 String patientId = "patientID";
 String firstName = "firstName";
@@ -90,6 +91,33 @@ class _PatientDetailsViewState extends State<PatientDetailsView> {
           title: const Text('Patients Details'),
           centerTitle: true,
         ),
+        floatingActionButton: Container(
+          key: const Key("refreshPatientDetails"), //for unit test
+          height: 70,
+          width: 70,
+          child: Material(
+            type: MaterialType.transparency,
+            child: Ink(
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: Colors.blue,
+                    width: 3.0),
+                color: Colors.blue,
+                shape: BoxShape.circle,
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(500.0),
+                onTap: () {
+                  getPatientDetails();
+                },
+                child: const Icon(
+                  Icons.refresh,
+                  size: 35,
+                ),
+              ),
+            ),
+          ),
+        ),
         body: SingleChildScrollView(
           child: Center(
             child: Padding(
@@ -125,7 +153,6 @@ class _PatientDetailsViewState extends State<PatientDetailsView> {
                             patientID: patientId,
                             patientFirstName: firstName,
                             patientLastname: lastName,
-                            
                           ),
                         ),
                       );
