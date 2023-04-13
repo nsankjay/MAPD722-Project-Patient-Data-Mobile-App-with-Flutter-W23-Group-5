@@ -11,9 +11,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'constants.dart';
 
-RefreshController _patientDetailsRefreshController =
-    RefreshController(initialRefresh: false);
-
 String patientId = "patientID";
 String firstName = "firstName";
 String lastName = "lastName";

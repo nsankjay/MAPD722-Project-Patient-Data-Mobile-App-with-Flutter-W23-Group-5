@@ -10,7 +10,8 @@ import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list_critical_patients_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-RefreshController _testRefreshController = RefreshController(initialRefresh: false);
+RefreshController _testRefreshController =
+    RefreshController(initialRefresh: false);
 
 class TestListTestsView extends StatefulWidget {
   final String patientID;
@@ -28,6 +29,7 @@ class TestListTestsView extends StatefulWidget {
 
 class _TestListTestsViewState extends State<TestListTestsView> {
   List patientTests = [];
+  List patientTestsForDisplay = [];
   bool isLoading = false;
   //String patienId = widget.patientID;
 
@@ -48,10 +50,12 @@ class _TestListTestsViewState extends State<TestListTestsView> {
       var items = json.decode(response.body);
       setState(() {
         patientTests = items;
+        patientTestsForDisplay = items;
       });
     } else {
       setState(() {
         patientTests = [];
+        patientTestsForDisplay = [];
       });
     }
   }
@@ -102,46 +106,73 @@ class _TestListTestsViewState extends State<TestListTestsView> {
           ),
         ),
       ),
-      body: 
-      SmartRefresher(
+      body: SmartRefresher(
         controller: _testRefreshController,
         enablePullDown: true,
         enablePullUp: true,
         onRefresh: () {
           _testRefreshController.refreshCompleted(resetFooterState: false);
-          
-          fetchPatientTests();
-          
-        },
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: patientTests == null ? 0 : patientTests.length,
-          itemBuilder: (context, index) {
-            //return Text('List item $index');
-            //var firstName = patients[0];
 
-            return ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ClinicalTestDataView(
-                      patientID: widget.patientID,
-                      patientFirstName: widget.patientFirstName,
-                      patientLastName: widget.patientLastname,
-                      testID: patientTests[index]['_id'],
-                    ),
-                  ),
-                );
-              },
-              title: Text(patientTests[index]['dateTime']),
-              subtitle: Text(patientTests[index]['_id']),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded),
-            );
-          },
-          // separatorBuilder: (BuildContext context, int index) {
-          //   return const Divider();
-          // },
+          fetchPatientTests();
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                  labelText: 'Search Test by Date',
+                  suffixIcon: Icon(Icons.search),
+                ),
+                onChanged: (text) {
+                  text = text.toLowerCase();
+                  setState(() {
+                    patientTestsForDisplay = patientTests.where((tests) {
+                      var testTitle = tests['dateTime'].toLowerCase();
+                      return testTitle.contains(text);
+                    }).toList();
+                  });
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height / 1.28,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: patientTestsForDisplay == null ? 0 : patientTestsForDisplay.length,
+                itemBuilder: (context, index) {
+                  //return Text('List item $index');
+                  //var firstName = patients[0];
+
+                  return ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ClinicalTestDataView(
+                            patientID: widget.patientID,
+                            patientFirstName: widget.patientFirstName,
+                            patientLastName: widget.patientLastname,
+                            testID: patientTestsForDisplay[index]['_id'],
+                          ),
+                        ),
+                      );
+                    },
+                    title: Text(patientTestsForDisplay[index]['dateTime']),
+                    subtitle: Text(patientTestsForDisplay[index]['_id']),
+                    trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                  );
+                },
+                // separatorBuilder: (BuildContext context, int index) {
+                //   return const Divider();
+                // },
+              ),
+            ),
+          ],
         ),
       ),
     );

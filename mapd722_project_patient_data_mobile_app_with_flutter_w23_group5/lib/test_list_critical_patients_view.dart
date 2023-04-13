@@ -13,12 +13,14 @@ class TestListCriticalPatientsView extends StatefulWidget {
   const TestListCriticalPatientsView({super.key});
 
   @override
-  State<TestListCriticalPatientsView> createState() => _TestListCriticalPatientsViewState();
+  State<TestListCriticalPatientsView> createState() =>
+      _TestListCriticalPatientsViewState();
 }
 
-class _TestListCriticalPatientsViewState extends State<TestListCriticalPatientsView> {
-
+class _TestListCriticalPatientsViewState
+    extends State<TestListCriticalPatientsView> {
   List criticalPatients = [];
+  List criticalPatientsForDisplay = [];
   bool isLoading = false;
 
   @override
@@ -38,14 +40,15 @@ class _TestListCriticalPatientsViewState extends State<TestListCriticalPatientsV
       var items = json.decode(response.body);
       setState(() {
         criticalPatients = items;
+        criticalPatientsForDisplay = items;
       });
     } else {
       setState(() {
         criticalPatients = [];
+        criticalPatientsForDisplay = [];
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +102,7 @@ class _TestListCriticalPatientsViewState extends State<TestListCriticalPatientsV
                 ),
               ),
               ListTile(
-                onTap: () {
-                },
+                onTap: () {},
                 leading: const Icon(Icons.crisis_alert_rounded),
                 title: const Text(
                   'Critical Patients',
@@ -125,30 +127,68 @@ class _TestListCriticalPatientsViewState extends State<TestListCriticalPatientsV
           ),
         ),
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemCount: criticalPatients == null ? 0 : criticalPatients.length,
-        itemBuilder: (context, index) {
-          //return Text('List item $index');
-          //var firstName = patients[0];
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              textAlign: TextAlign.center,
+              decoration: const InputDecoration(
+                labelText: 'Search Patient',
+                suffixIcon: Icon(Icons.search),
+              ),
+              onChanged: (text) {
+                text = text.toLowerCase();
+                setState(() {
+                  criticalPatientsForDisplay =
+                      criticalPatients.where((criticalPatient) {
+                    var criticalPatientTitle =
+                        criticalPatient['firstName'].toLowerCase() +
+                            criticalPatient['lastName'].toLowerCase();
+                    return criticalPatientTitle.contains(text);
+                  }).toList();
+                });
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height / 1.28,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: criticalPatientsForDisplay == null
+                  ? 0
+                  : criticalPatientsForDisplay.length,
+              itemBuilder: (context, index) {
+                //return Text('List item $index');
+                //var firstName = patients[0];
 
-          return ListTile(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => PatientDetailsView(patientID: criticalPatients[index]['_id'] ,),
-                ),
-              );
-            },
-            title: Text(criticalPatients[index]['firstName'] +
-                " " +
-                criticalPatients[index]['lastName']),
-            subtitle: Text(criticalPatients[index]['_id']),
-            trailing: const Icon(Icons.arrow_forward_ios_rounded),
-          );
-        },
-        // separatorBuilder: (BuildContext context, int index) {
-        //   return const Divider();
-        // },
+                return ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PatientDetailsView(
+                          patientID: criticalPatientsForDisplay[index]['_id'],
+                        ),
+                      ),
+                    );
+                  },
+                  title: Text(criticalPatientsForDisplay[index]['firstName'] +
+                      " " +
+                      criticalPatientsForDisplay[index]['lastName']),
+                  subtitle: Text(criticalPatientsForDisplay[index]['_id']),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                );
+              },
+              // separatorBuilder: (BuildContext context, int index) {
+              //   return const Divider();
+              // },
+            ),
+          ),
+        ],
       ),
     );
   }

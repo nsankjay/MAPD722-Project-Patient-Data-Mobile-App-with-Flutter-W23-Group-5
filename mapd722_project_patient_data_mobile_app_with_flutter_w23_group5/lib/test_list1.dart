@@ -8,7 +8,6 @@ import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/patient_details_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list_critical_patients_view.dart';
-import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_patient_details_view.dart';
 
 class testList1 extends StatefulWidget {
   const testList1({super.key});
@@ -19,6 +18,7 @@ class testList1 extends StatefulWidget {
 
 class _testList1State extends State<testList1> {
   List patients = [];
+  List patientsForDisplay = [];
   bool isLoading = false;
 
   @override
@@ -38,10 +38,12 @@ class _testList1State extends State<testList1> {
       var items = json.decode(response.body);
       setState(() {
         patients = items;
+        patientsForDisplay = items;
       });
     } else {
       setState(() {
         patients = [];
+        patientsForDisplay = [];
       });
     }
   }
@@ -157,31 +159,33 @@ class _testList1State extends State<testList1> {
       ),
       body: Column(
         children: [
-          TextField(
-            onChanged: (value) {
-              //patients.where((food) => toLowerCase().contains(userInputValue.toLowerCase()).toList();
-              for (var i = 0; i < patients.length; i++) {
-                if (patients[i]["firstName"] == value) {
-                  print('Using loop: ${patients[i]["firstName"]}');
-
-                  // Found the person, stop the loop
-
-                  return;
-                } else {
-                  print('Using loop: ${patients[i]["firstName"]}');
-                  patients.remove(i);
-                  setState(() {
-                    fetchPatient();
-                  });
-                }
-              }
-            },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              textAlign: TextAlign.center,
+              decoration: const InputDecoration(
+                labelText: 'Search Patient',
+                suffixIcon: Icon(Icons.search),
+              ),
+              onChanged: (text) {
+                text = text.toLowerCase();
+                setState(() {
+                  patientsForDisplay = patients.where((patient) {
+                    var patientTitle = patient['firstName'].toLowerCase() + patient['lastName'].toLowerCase();
+                    return patientTitle.contains(text);
+                  }).toList();
+                });
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Container(
-            height: MediaQuery.of(context).size.height / 1.3,
+            height: MediaQuery.of(context).size.height / 1.28,
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: patients == null ? 0 : patients.length,
+              itemCount: patientsForDisplay == null ? 0 : patientsForDisplay.length,
               itemBuilder: (context, index) {
                 //return Text('List item $index');
                 //var firstName = patients[0];
@@ -192,15 +196,15 @@ class _testList1State extends State<testList1> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => PatientDetailsView(
-                          patientID: patients[index]['_id'],
+                          patientID: patientsForDisplay[index]['_id'],
                         ),
                       ),
                     );
                   },
-                  title: Text(patients[index]['firstName'] +
+                  title: Text(patientsForDisplay[index]['firstName'] +
                       " " +
-                      patients[index]['lastName']),
-                  subtitle: Text(patients[index]['_id']),
+                      patientsForDisplay[index]['lastName']),
+                  subtitle: Text(patientsForDisplay[index]['_id']),
                   trailing: const Icon(Icons.arrow_forward_ios_rounded),
                 );
               },

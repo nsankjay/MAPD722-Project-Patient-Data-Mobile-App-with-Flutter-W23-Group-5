@@ -50,3 +50,39 @@ class TestDescritionPage extends StatelessWidget {
     );
   }
 }
+
+
+//Sample code for searching a list when retriving json data
+
+// Row(
+//             children: [
+//               Padding(
+//                 padding: const EdgeInsets.all(8.0),
+//                 child: TextField(
+//                   textAlign: TextAlign.center,
+//                   decoration: const InputDecoration(
+//                     labelText: 'Search Patient',
+//                     suffixIcon: Icon(Icons.search),
+//                   ),
+//                   onChanged: (text) {
+                    //patients.where((food) => toLowerCase().contains(userInputValue.toLowerCase()).toList();
+                    // for (var i = 0; i < patients.length; i++) {
+                    //   if (patients[i]["firstName"] == Text) {
+                    //     print('Using loop: ${patients[i]["firstName"]}');
+
+                    //     // Found the person, stop the loop
+
+                    //     return;
+                    //   } else {
+                    //     print('Using loop: ${patients[i]["firstName"]}');
+                    //     patients.remove(i);
+                    //     setState(() {
+                    //       fetchPatient();
+                    //     });
+                    //   }
+                    // }
+//                   },
+//                 ),
+//               ),
+//             ],
+//           ),

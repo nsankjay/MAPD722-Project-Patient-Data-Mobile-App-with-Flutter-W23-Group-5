@@ -25,7 +25,6 @@ import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/register_user_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_home_page.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list1.dart';
-import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -276,7 +275,7 @@ Future<void> _showMyDialog(BuildContext context) async {
           child: ListBody(
             children: const <Widget>[
               //Text('Login Error'),
-              Text('User Name or Password Mismatch'),
+              Text('User Name & Password Missing or Mismatch'),
             ],
           ),
         ),
