@@ -1,20 +1,90 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
+
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/add_patient_view.dart';
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/list_critical_patients_view.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/main.dart';
 import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/patient_details_view.dart';
+import 'package:http/http.dart' as http;
+import 'package:mapd722_project_patient_data_mobile_app_with_flutter_w23_group5/test_list_critical_patients_view.dart';
 
-import 'list_critical_patients_view.dart';
-
-class ListPatientsView extends StatelessWidget {
+class ListPatientsView extends StatefulWidget {
   const ListPatientsView({super.key});
+
+  @override
+  State<ListPatientsView> createState() => _ListPatientsViewState();
+}
+
+class _ListPatientsViewState extends State<ListPatientsView> {
+    List patients = [];
+  List patientsForDisplay = [];
+  bool isLoading = false;
+
+    @override
+  void initState() {
+    //Todo implement init state
+    super.initState();
+    this.fetchPatient();
+  }
+
+  fetchPatient() async {
+    print("Fetching....");
+    var url = "http://localhost:3500/patients";
+    var response = await http.get(Uri.parse(url));
+    //print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var items = json.decode(response.body);
+      setState(() {
+        patients = items;
+        patientsForDisplay = items;
+      });
+    } else {
+      setState(() {
+        patients = [];
+        patientsForDisplay = [];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //automaticallyImplyLeading: false,
         title: const Text('Patients List'),
-        centerTitle: true,
+      ),
+      floatingActionButton: Container(
+        key: const Key("addNewPatientBtn"), //for unit test
+        height: 70,
+        width: 70,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Ink(
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: const Color.fromARGB(255, 233, 148, 139), width: 3.0),
+              color: const Color.fromARGB(255, 233, 148, 139),
+              shape: BoxShape.circle,
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(500.0),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return const AddPatientView();
+                    },
+                  ),
+                );
+              },
+              child: const Icon(
+                Icons.add,
+                size: 35,
+              ),
+            ),
+          ),
+        ),
       ),
       drawer: SafeArea(
         child: Drawer(
@@ -58,7 +128,7 @@ class ListPatientsView extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
-                        return const ListCriticalPatientsView();
+                        return const TestListCriticalPatientsView();
                       },
                     ),
                   );
@@ -87,169 +157,63 @@ class ListPatientsView extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 5.0,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              textAlign: TextAlign.center,
+              decoration: const InputDecoration(
+                labelText: 'Search Patient',
+                suffixIcon: Icon(Icons.search),
               ),
-              // child: Wrap(
-              //   spacing: 10,
-              //   children: const [
+              onChanged: (text) {
+                text = text.toLowerCase();
+                setState(() {
+                  patientsForDisplay = patients.where((patient) {
+                    var patientTitle = patient['firstName'].toLowerCase() + patient['lastName'].toLowerCase();
+                    return patientTitle.contains(text);
+                  }).toList();
+                });
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height / 1.28,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: patientsForDisplay == null ? 0 : patientsForDisplay.length,
+              itemBuilder: (context, index) {
+                //return Text('List item $index');
+                //var firstName = patients[0];
 
-              //   ],
-              // ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print('You Have clicked on Max Payne');
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) {
-                //       //return const PatientDetailsView();
-                //     },
-                //   ),
-                // );
-              },
-              child: Container(
-                width: double.infinity,
-                //color: Colors.white,
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 5.0,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: const [
-                    ListTile(
-                      title: Text('Max Payne'),
-                      trailing: Icon(Icons.arrow_forward_ios_rounded),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print('You Have clicked on Mona Sax');
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) {
-                //       //return const PatientDetailsView();
-                //     },
-                //   ),
-                // );
-              },
-              child: Container(
-                width: double.infinity,
-                //color: Colors.white,
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 5.0,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: const [
-                    ListTile(
-                      title: Text('Mona Sax'),
-                      trailing: Icon(Icons.arrow_forward_ios_rounded),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print('You Have clicked on Alfred Woden');
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) {
-                //       //return const PatientDetailsView();
-                //     },
-                //   ),
-                // );
-              },
-              child: Container(
-                width: double.infinity,
-                //color: Colors.white,
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 5.0,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: const [
-                    ListTile(
-                      title: Text('Alfred Woden'),
-                      trailing: Icon(Icons.arrow_forward_ios_rounded),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const AddPatientView();
-                    },
-                  ),
+                return ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PatientDetailsView(
+                          patientID: patientsForDisplay[index]['_id'],
+                        ),
+                      ),
+                    );
+                  },
+                  title: Text(patientsForDisplay[index]['firstName'] +
+                      " " +
+                      patientsForDisplay[index]['lastName']),
+                  subtitle: Text(patientsForDisplay[index]['_id']),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 233, 148, 139),
-                foregroundColor: Colors.white,
-                minimumSize: const Size(410, 50),
-                shape: const StadiumBorder(),
-              ),
-              child: const Text(
-                '+ Patient',
-                style: TextStyle(
-                  fontSize: 25,
-                ),
-              ),
+              // separatorBuilder: (BuildContext context, int index) {
+              //   return const Divider();
+              // },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
